@@ -13,5 +13,6 @@
 
 pub mod opt;
 pub mod root;
+pub mod special;
 
 mod util;
