@@ -1,0 +1,9 @@
+[package]
+name = "corix"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[dev-dependencies]
+assert_float_eq = "1.1.4"
