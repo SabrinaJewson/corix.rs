@@ -25,5 +25,17 @@ pub(crate) fn slice_try_init_with<T: Copy, E>(
     Ok(unsafe { slice_assume_init_mut(slice) })
 }
 
+macro_rules! setter {
+    ($setter:ident => $field:ident: $fty:ty) => {
+        #[doc = concat!("Set [`Self::", stringify!($field), "`].")]
+        #[must_use]
+        pub fn $setter(mut self, $field: $fty) -> Self {
+            self.$field = $field;
+            self
+        }
+    };
+}
+pub(crate) use setter;
+
 use core::slice;
 use std::mem::MaybeUninit;

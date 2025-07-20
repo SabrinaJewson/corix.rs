@@ -2,6 +2,7 @@
 #![warn(clippy::pedantic)]
 #![warn(missing_docs)]
 #![warn(missing_debug_implementations)]
+#![allow(mixed_script_confusables)]
 #![allow(clippy::cast_precision_loss)]
 #![allow(clippy::items_after_test_module)]
 #![allow(clippy::match_bool)]

@@ -1,18 +1,16 @@
-//! Root-finding using Brent’s method. See [`Brent`].
-//!
-//! # Examples
-//!
-//! Solving a non-solvable quintic numerically:
-//!
-//! ```
-//! // We know the root is in the range [-4.0, 4.0].
-//! let root = corix::root::Brent::new(-4.0, 4.0).root(|x| x.powi(5) - x - 1.0).unwrap();
-//! assert_float_eq::assert_float_relative_eq!(root, 1.167_303_978_261_801);
-//! ```
+//! [`Brent`]: Root-finding using Brent’s method.
 
 /// Root-finding using Brent’s method.
 ///
-/// See [the module docs](self) for more info.
+/// # Examples
+///
+/// Solving a non-solvable quintic numerically:
+///
+/// ```
+/// // We know the root is in the range [-4.0, 4.0].
+/// let root = corix::root::Brent::new(-4.0, 4.0).root(|x| x.powi(5) - x - 1.0).unwrap();
+/// assert_float_eq::assert_float_relative_eq!(root, 1.167_303_978_261_801);
+/// ```
 #[derive(Debug)]
 #[non_exhaustive]
 pub struct Brent {
@@ -50,26 +48,9 @@ impl Brent {
         }
     }
 
-    /// Set [`Self::abs_tol`].
-    #[must_use]
-    pub fn with_abs_tol(mut self, abs_tol: f64) -> Self {
-        self.abs_tol = abs_tol;
-        self
-    }
-
-    /// Set [`Self::rel_tol`].
-    #[must_use]
-    pub fn with_rel_tol(mut self, rel_tol: f64) -> Self {
-        self.rel_tol = rel_tol;
-        self
-    }
-
-    /// Set [`Self::max_iters`].
-    #[must_use]
-    pub fn with_max_iters(mut self, max_iters: u64) -> Self {
-        self.max_iters = max_iters;
-        self
-    }
+    crate::util::setter!(with_abs_tol => abs_tol: f64);
+    crate::util::setter!(with_rel_tol => rel_tol: f64);
+    crate::util::setter!(with_max_iters => max_iters: u64);
 
     /// Run the solver.
     ///

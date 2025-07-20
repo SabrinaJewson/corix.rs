@@ -3,7 +3,14 @@
 pub mod nelder_mead;
 pub use nelder_mead::NelderMead;
 
+pub mod brent;
+pub use brent::Brent;
+
+pub mod bracket;
+pub use bracket::Bracket;
+
 /// The minimum relative tolerance.
+/// Equal to 4ε.
 // https://github.com/scipy/scipy/blob/v1.16.0/scipy/optimize/_zeros_py.py#L11
 pub const MIN_REL_TOL: f64 = 4.0 * f64::EPSILON;
 

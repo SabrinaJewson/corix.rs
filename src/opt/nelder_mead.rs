@@ -1,45 +1,43 @@
-//! Optimization using Nelder–Mead. See [`NelderMead`].
-//!
-//! # Examples
-//!
-//! Fitting a GEV distribution using maximum likelihood.
-//!
-//! ```
-//! let data = (0..50).map(|i| i as f64).collect::<Vec<_>>();
-//!
-//! let mean = data.iter().sum::<f64>() / (data.len() as f64);
-//! let var = data.iter().map(|&x| (x - mean).powi(2)).sum::<f64>() / (data.len() as f64 - 1.0);
-//!
-//! let output = corix::opt::NelderMead::new(&[mean, var.sqrt(), 0.0])
-//!     .with_lower_bound([f64::NEG_INFINITY, f64::EPSILON, f64::NEG_INFINITY])
-//!     .maximize(|&[μ, σ, ξ]| data.iter().map(|&x| gev_ln_pdf(μ, σ, ξ, x)).sum::<f64>())
-//!     .unwrap();
-//! let [μ, σ, ξ] = output.x;
-//! assert_float_eq::assert_float_relative_eq!(μ, 20.530_555_331_726_88);
-//! assert_float_eq::assert_float_relative_eq!(σ, 15.192_413_744_842_586);
-//! assert_float_eq::assert_float_relative_eq!(ξ, -0.440_690_136_761_227_8);
-//! assert_float_eq::assert_float_relative_eq!(output.f, -203.122_397_429_223_53);
-//! assert_eq!(output.iters, 139);
-//! assert_eq!(output.calls, 250);
-//!
-//! fn gev_ln_pdf(μ: f64, σ: f64, ξ: f64, x: f64) -> f64 {
-//!     let x = (x - μ) / σ;
-//!     -σ.ln()
-//!         - match ξ {
-//!             0.0 => x + (-x).exp(),
-//!             ξ if ξ * x < -1.0 => return f64::NEG_INFINITY,
-//!             ξ => (1.0 + ξ.recip()) * (ξ * x).ln_1p() + (1.0 + ξ * x).powf(-ξ.recip()),
-//!         }
-//!
-//! }
-//! ```
+//! [`NelderMead`]: Optimization using Nelder–Mead.
 
 /// Optimization using Nelder–Mead.
 ///
-/// See [the module docs](self) for more info.
-///
 /// [`Self::begin_minimize`] is the lowest-level interface for advanced use cases,
 /// but we provide convenient wrappers too.
+///
+/// # Examples
+///
+/// Fitting a GEV distribution using maximum likelihood.
+///
+/// ```
+/// let data = (0..50).map(|i| i as f64).collect::<Vec<_>>();
+///
+/// let mean = data.iter().sum::<f64>() / (data.len() as f64);
+/// let var = data.iter().map(|&x| (x - mean).powi(2)).sum::<f64>() / (data.len() as f64 - 1.0);
+///
+/// let output = corix::opt::NelderMead::new(&[mean, var.sqrt(), 0.0])
+///     .with_lower_bound([f64::NEG_INFINITY, f64::EPSILON, f64::NEG_INFINITY])
+///     .maximize(|&[μ, σ, ξ]| data.iter().map(|&x| gev_ln_pdf(μ, σ, ξ, x)).sum::<f64>())
+///     .unwrap();
+/// let [μ, σ, ξ] = output.x;
+/// assert_float_eq::assert_float_relative_eq!(μ, 20.530_555_331_726_88);
+/// assert_float_eq::assert_float_relative_eq!(σ, 15.192_413_744_842_586);
+/// assert_float_eq::assert_float_relative_eq!(ξ, -0.440_690_136_761_227_8);
+/// assert_float_eq::assert_float_relative_eq!(output.f, -203.122_397_429_223_53);
+/// assert_eq!(output.iters, 139);
+/// assert_eq!(output.calls, 250);
+///
+/// fn gev_ln_pdf(μ: f64, σ: f64, ξ: f64, x: f64) -> f64 {
+///     let x = (x - μ) / σ;
+///     -σ.ln()
+///         - match ξ {
+///             0.0 => x + (-x).exp(),
+///             ξ if ξ * x < -1.0 => return f64::NEG_INFINITY,
+///             ξ => (1.0 + ξ.recip()) * (ξ * x).ln_1p() + (1.0 + ξ * x).powf(-ξ.recip()),
+///         }
+///
+/// }
+/// ```
 pub struct NelderMead<V: ?Sized + Vector> {
     n: usize,
     // The buffer itself; of the form [f64; 2n² + 4n + 2]. It contains:
@@ -156,47 +154,12 @@ impl<V: ?Sized + Vector> NelderMead<V> {
         self
     }
 
-    /// Set [`Self::lower_bound`].
-    #[must_use]
-    pub fn with_lower_bound(mut self, lower_bound: V::Owned) -> Self {
-        self.lower_bound = lower_bound;
-        self
-    }
-
-    /// Set [`Self::upper_bound`].
-    #[must_use]
-    pub fn with_upper_bound(mut self, upper_bound: V::Owned) -> Self {
-        self.upper_bound = upper_bound;
-        self
-    }
-
-    /// Set [`Self::x_abs_tol`].
-    #[must_use]
-    pub fn with_x_abs_tol(mut self, x_abs_tol: f64) -> Self {
-        self.x_abs_tol = x_abs_tol;
-        self
-    }
-
-    /// Set [`Self::f_abs_tol`].
-    #[must_use]
-    pub fn with_f_abs_tol(mut self, f_abs_tol: f64) -> Self {
-        self.f_abs_tol = f_abs_tol;
-        self
-    }
-
-    /// Set [`Self::max_iters`].
-    #[must_use]
-    pub fn with_max_iters(mut self, max_iters: u64) -> Self {
-        self.max_iters = max_iters;
-        self
-    }
-
-    /// Set [`Self::max_calls`].
-    #[must_use]
-    pub fn with_max_calls(mut self, max_calls: u64) -> Self {
-        self.max_calls = max_calls;
-        self
-    }
+    crate::util::setter!(with_lower_bound => lower_bound: V::Owned);
+    crate::util::setter!(with_upper_bound => upper_bound: V::Owned);
+    crate::util::setter!(with_x_abs_tol => x_abs_tol: f64);
+    crate::util::setter!(with_f_abs_tol => f_abs_tol: f64);
+    crate::util::setter!(with_max_iters => max_iters: u64);
+    crate::util::setter!(with_max_calls => max_calls: u64);
 
     /// Maximize the result of the given function.
     pub fn maximize(self, mut f: impl FnMut(&V) -> f64) -> Result<Output<V>, Error> {
