@@ -11,6 +11,8 @@
 //! ```
 
 /// Root-finding using Brent’s method.
+///
+/// See [the module docs](self) for more info.
 #[derive(Debug)]
 #[non_exhaustive]
 pub struct Brent {
@@ -174,7 +176,10 @@ impl Brent {
             }
         }
 
-        Err(Error::Convergence(ConvergenceError(self.max_iters)))
+        Err(Error::Convergence(ConvergenceError {
+            calls: false,
+            val: self.max_iters,
+        }))
     }
 }
 
@@ -242,7 +247,7 @@ use super::DEFAULT_ABS_TOL;
 use super::DEFAULT_MAX_ITERS;
 use super::DEFAULT_REL_TOL;
 use super::InvalidTol;
-use crate::NanError;
+use super::NanError;
 use std::convert::Infallible;
 use std::fmt;
 use std::fmt::Display;
