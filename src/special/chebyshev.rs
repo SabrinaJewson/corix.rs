@@ -3,18 +3,15 @@
 /// Evaluates the series
 ///
 /// ```text
-///        N-1
-///         - '
-///  y  =   >   coef[i] T (x/2)
-///         -            i
-///        i=0
+///     N-1
+/// y =  ∑ coef[i] Tᵢ (x/2)
+///     i=0
 /// ```
 ///
-/// of Chebyshev polynomials Ti at argument x/2.
+/// of Chebyshev polynomials `Tᵢ` at argument `x/2`.
 ///
 /// Coefficients are stored in reverse order, i.e. the zero
-/// order term is last in the array.  Note N is the number of
-/// coefficients, not the order.
+/// order term is last in the array.
 ///
 /// If coefficients are for the interval a to b, x must
 /// have been transformed to x -> 2(2x - b - a)/(b-a) before
@@ -33,7 +30,7 @@
 /// addition per loop than evaluating a nested polynomial of
 /// the same degree.
 #[must_use]
-pub fn evaluate_chebyshev(x: f64, coef: &[f64]) -> f64 {
+pub fn eval_chebyshev(x: f64, coef: &[f64]) -> f64 {
     let mut b0 = 0.0;
     let mut b1 = 0.0;
     let mut b2 = 0.0;
@@ -47,9 +44,9 @@ pub fn evaluate_chebyshev(x: f64, coef: &[f64]) -> f64 {
 
 #[test]
 fn works() {
-    assert_float_eq::assert_float_relative_eq!(evaluate_chebyshev(f64::INFINITY, &[]), 0.0);
+    assert_float_eq::assert_float_relative_eq!(eval_chebyshev(f64::INFINITY, &[]), 0.0);
     assert_float_eq::assert_float_relative_eq!(
-        evaluate_chebyshev(2.0, &[-2.7, 8.3, 37.0, 12.0, -6.0]),
+        eval_chebyshev(2.0, &[-2.7, 8.3, 37.0, 12.0, -6.0]),
         51.6
     );
 }
