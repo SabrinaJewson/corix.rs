@@ -37,7 +37,7 @@ pub fn eval_chebyshev(x: f64, coef: &[f64]) -> f64 {
     for v in coef {
         b2 = b1;
         b1 = b0;
-        b0 = x * b1 - b2 + v;
+        b0 = x.mul_add(b1, -b2) + v;
     }
     0.5f64 * (b0 - b2)
 }

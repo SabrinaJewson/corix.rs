@@ -25,16 +25,16 @@
 /// ```
 #[must_use]
 pub fn eval_polynomial(x: f64, coef: &[f64]) -> f64 {
-    let mut ans = 0.0;
-    for coef in coef {
-        ans = ans * x + coef;
+    let mut ans: f64 = 0.0;
+    for &coef in coef {
+        ans = ans.mul_add(x, coef);
     }
     ans
 }
 
 /// Evaluate polynomial when coefficient of x is 1.0.
 /// Otherwise same as [`eval_polynomial`].
-/// 
+///
 /// # Examples
 ///
 /// ```
@@ -47,9 +47,9 @@ pub fn eval_polynomial(x: f64, coef: &[f64]) -> f64 {
 /// ```
 #[must_use]
 pub fn eval_polynomial_1(x: f64, coef: &[f64]) -> f64 {
-    let mut ans = 1.0;
-    for coef in coef {
-        ans = ans * x + coef;
+    let mut ans: f64 = 1.0;
+    for &coef in coef {
+        ans = ans.mul_add(x, coef);
     }
     ans
 }
