@@ -131,7 +131,7 @@ pub fn mean_biased_sd(arr: &[f64]) -> (f64, f64) {
 /// Like [`sum`], but allows passing in a custom function.
 ///
 /// The function is expected to add a value to its first argument.
-/// It will be called for every element of the slice.
+/// It will be called for every element of the slice, in order.
 ///
 /// Works best if the function is vectorizable.
 ///
