@@ -1,0 +1,3 @@
+[submodule "src/xsf/vendored"]
+	path = src/xsf/vendored
+	url = https://github.com/scipy/xsf

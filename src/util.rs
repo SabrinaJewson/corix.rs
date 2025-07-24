@@ -37,5 +37,36 @@ macro_rules! setter {
 }
 pub(crate) use setter;
 
+pub(crate) fn elim_complex_float<K: ComplexFloat, C: ComplexFloatMotive>(
+    real: C::Output<K::Real>,
+    complex: C::Output<Complex<K::Real>>,
+) -> C::Output<K> {
+    const {
+        assert!(size_of::<K::Real>() != size_of::<Complex<K::Real>>());
+        assert!(
+            (size_of::<K>() == size_of::<K::Real>())
+                != (size_of::<K>() == size_of::<Complex<K::Real>>())
+        );
+    };
+
+    // Since `ComplexFloat` is sealed, we can be sure that `K` is either `K::Real` or
+    // `Complex<K::Real>`. Since we just asserted above that these two types have distinct sizes,
+    // we can check `size_of` to determine which one it is.
+
+    if size_of::<K>() == size_of::<K::Real>() {
+        unsafe { transmute_copy(&ManuallyDrop::new(real)) }
+    } else {
+        unsafe { transmute_copy(&ManuallyDrop::new(complex)) }
+    }
+}
+
+pub(crate) trait ComplexFloatMotive {
+    type Output<K: ComplexFloat>;
+}
+
 use core::slice;
+use num_complex::Complex;
+use num_complex::ComplexFloat;
+use std::mem::ManuallyDrop;
 use std::mem::MaybeUninit;
+use std::mem::transmute_copy;

@@ -17,4 +17,10 @@ pub mod root;
 pub mod special;
 pub use special::*;
 
+mod xsf {
+    use num_complex::Complex as std_complex;
+
+    include!(concat!(env!("OUT_DIR"), "/xsf_bindings.rs"));
+}
+
 mod util;
