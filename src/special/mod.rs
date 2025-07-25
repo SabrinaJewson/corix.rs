@@ -14,3 +14,5 @@ pub use sum::*;
 
 pub mod airy;
 pub use airy::*;
+
+pub mod ellip;
