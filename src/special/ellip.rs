@@ -84,7 +84,7 @@ pub fn k_1m(m: f64) -> f64 {
 /// ```
 #[must_use]
 pub fn k_incomplete(φ: f64, m: f64) -> f64 {
-    unsafe { crate::xsf::ellipkinc(φ, m)  }
+    unsafe { crate::xsf::ellipkinc(φ, m) }
 }
 
 /// Complete elliptic integral of the second kind.
@@ -111,5 +111,5 @@ pub fn e(m: f64) -> f64 {
 /// ```
 #[must_use]
 pub fn e_incomplete(φ: f64, m: f64) -> f64 {
-    unsafe { crate::xsf::ellipeinc(φ, m)  }
+    unsafe { crate::xsf::ellipeinc(φ, m) }
 }

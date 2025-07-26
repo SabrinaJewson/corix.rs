@@ -1,4 +1,6 @@
 //! [Airy functions](https://en.wikipedia.org/wiki/Airy_function).
+// NB. Right now, missing symmetric versions (elliprc, elliprd, elliprf, elliprg, elliprj) as
+// `ellint_carlson` has yet to be added to xsf.
 
 /// The result of [`airy`] and [`airy_exp`].
 #[derive(Debug, Default, Clone, Copy)]
@@ -27,7 +29,7 @@ pub struct Airy<K = f64> {
 /// ```
 #[must_use]
 pub fn airy<K: ComplexFloat<Real = f64>>(x: K) -> Airy<K> {
-    struct C;
+    enum C {}
     impl ComplexFloatMotive for C {
         type Output<K: ComplexFloat> = unsafe extern "C" fn(K, *mut K, *mut K, *mut K, *mut K);
     }
@@ -56,8 +58,8 @@ pub fn airy<K: ComplexFloat<Real = f64>>(x: K) -> Airy<K> {
 /// The scaling is as follows:
 ///
 /// ```text
-/// ai *= exp(2/3 × z × sqrt(z))
-/// bi *= exp(-|2/3 × Re(z × sqrt(z))|)
+/// airy_exp(z).ai = airy(z).ai × exp(2/3 × z × sqrt(z))
+/// airy_exp(z).bi = airy(z).bi × exp(-|2/3 × Re(z × sqrt(z))|)
 /// ```
 ///
 /// (with the derivates scaled accordingly.)
@@ -74,7 +76,7 @@ pub fn airy<K: ComplexFloat<Real = f64>>(x: K) -> Airy<K> {
 /// ```
 #[must_use]
 pub fn airy_exp<K: ComplexFloat<Real = f64>>(x: K) -> Airy<K> {
-    struct C;
+    enum C {}
     impl ComplexFloatMotive for C {
         type Output<K: ComplexFloat> = unsafe extern "C" fn(K, *mut K, *mut K, *mut K, *mut K);
     }
@@ -110,7 +112,9 @@ pub fn airy_exp<K: ComplexFloat<Real = f64>>(x: K) -> Airy<K> {
 ///
 /// # Panics
 ///
-/// Panics if the slices do not all have equal lengths.
+/// Panics if:
+/// - the slices do not all have equal lengths, or
+/// - the slices are too large.
 ///
 /// # Examples
 ///

@@ -25,7 +25,8 @@ fn main() {
         .clang_arg(&prefix_flag)
         .allowlist_file("src/xsf/c_api.hpp")
         .blocklist_type("std::complex")
-        .blocklist_item("std::complex_value_type")
+        .blocklist_type("std::complex_value_type")
+        .blocklist_type("Slice")
         .generate()
         .unwrap()
         .to_string();
@@ -33,11 +34,15 @@ fn main() {
 
     let mut res = Vec::new();
     while let Some((&first, rest)) = bindings.split_first() {
-        if let Some(rest) = rest.strip_prefix(b"pub fn ") {
+        if let Some(rest) = bindings.strip_prefix(b"pub fn ") {
             let (name, rest) = rest.split_at(rest.iter().position(|&b| b == b'(').unwrap());
             let name = str::from_utf8(name).unwrap();
             let stripped_name = name.strip_prefix(&prefix).unwrap();
             write!(res, "#[link_name = {name:?}] pub fn {stripped_name}").unwrap();
+            bindings = rest;
+            continue;
+        }
+        if let Some(rest) = bindings.strip_prefix(b"xsf_") {
             bindings = rest;
             continue;
         }

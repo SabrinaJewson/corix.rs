@@ -16,3 +16,5 @@ pub mod airy;
 pub use airy::*;
 
 pub mod ellip;
+
+pub mod bessel;
