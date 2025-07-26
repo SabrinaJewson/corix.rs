@@ -22,7 +22,7 @@ where
 
 /// Calculate the mean of a list of values.
 ///
-/// Returns [`f64::NAN`] is the list is empty.
+/// Returns [`f64::NAN`] if the list is empty.
 ///
 /// # Examples
 ///
@@ -42,7 +42,7 @@ pub fn mean(arr: &[f64]) -> f64 {
 ///
 /// See also [`mean_unbiased_sd`] for the standard deviation.
 ///
-/// Returns [`f64::NAN`] is the list is empty.
+/// Returns [`f64::NAN`] if the list is empty.
 ///
 /// # Examples
 ///
@@ -66,7 +66,7 @@ pub fn mean_unbiased_var(arr: &[f64]) -> (f64, f64) {
 ///
 /// See also [`mean_biased_sd`] for the standard deviation.
 ///
-/// Returns [`f64::NAN`] is the list is empty.
+/// Returns [`f64::NAN`] if the list is empty.
 ///
 /// # Examples
 ///
@@ -89,7 +89,7 @@ pub fn mean_biased_var(arr: &[f64]) -> (f64, f64) {
 ///
 /// See also [`mean_unbiased_var`] for the variance.
 ///
-/// Returns [`f64::NAN`] is the list is empty.
+/// Returns [`f64::NAN`] if the list is empty.
 ///
 /// # Examples
 ///
@@ -111,7 +111,7 @@ pub fn mean_unbiased_sd(arr: &[f64]) -> (f64, f64) {
 ///
 /// See also [`mean_biased_var`] for the variance.
 ///
-/// Returns [`f64::NAN`] is the list is empty.
+/// Returns [`f64::NAN`] if the list is empty.
 ///
 /// # Examples
 ///

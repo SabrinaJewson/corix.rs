@@ -19,6 +19,9 @@ pub mod root;
 pub mod special;
 pub use special::*;
 
+pub mod stats;
+pub use stats::*;
+
 mod xsf {
     use num_complex::Complex as std_complex;
 
