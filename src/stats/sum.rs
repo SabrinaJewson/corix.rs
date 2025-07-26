@@ -127,6 +127,70 @@ pub fn mean_biased_sd(arr: &[f64]) -> (f64, f64) {
     (mean, var.sqrt())
 }
 
+/// Calculate the mean and unbiased sample covariance of two lists.
+///
+/// Returns the mean of `a`, the mean of `b`, and the covariance.
+///
+/// The denominator is `n - 1` – see [`mean_biased_cov`] for the `n` version.
+///
+/// Returns [`f64::NAN`] if both lists are empty.
+///
+/// # Panics
+///
+/// Panics if `a` and `b` are different lengths.
+///
+/// # Examples
+///
+/// ```
+/// let (mean_a, mean_b, cov) = corix::mean_unbiased_cov(&[5.0, 2.0, -1.3], &[5.2, 1.8, -1.6]);
+/// assert_float_relative_eq!(mean_a, 1.9);
+/// assert_float_relative_eq!(mean_b, 1.8);
+/// assert_float_relative_eq!(cov, 10.71);
+/// # use assert_float_eq::assert_float_relative_eq;
+/// ```
+#[must_use]
+pub fn mean_unbiased_cov(a: &[f64], b: &[f64]) -> (f64, f64, f64) {
+    assert_eq!(a.len(), b.len());
+    let [a_mean, b_mean] = [mean(a), mean(b)];
+    let mut b = b.iter().copied();
+    let cov = sum_with(a, |acc: &mut f64, val| {
+        *acc += (val - a_mean) * (b.next().unwrap() - b_mean);
+    }) / (a.len() as f64 - 1.0);
+    (a_mean, b_mean, cov)
+}
+
+/// Calculate the mean and biased sample covariance of two lists.
+///
+/// Returns the mean of `a`, the mean of `b`, and the covariance.
+///
+/// The denominator is `n` – see [`mean_unbiased_cov`] for the `n - 1` version.
+///
+/// Returns [`f64::NAN`] if both lists are empty.
+///
+/// # Panics
+///
+/// Panics if `a` and `b` are different lengths.
+///
+/// # Examples
+///
+/// ```
+/// let (mean_a, mean_b, cov) = corix::mean_biased_cov(&[5.0, 2.0, -1.3], &[5.2, 1.8, -1.6]);
+/// assert_float_relative_eq!(mean_a, 1.9);
+/// assert_float_relative_eq!(mean_b, 1.8);
+/// assert_float_relative_eq!(cov, 7.14);
+/// # use assert_float_eq::assert_float_relative_eq;
+/// ```
+#[must_use]
+pub fn mean_biased_cov(a: &[f64], b: &[f64]) -> (f64, f64, f64) {
+    assert_eq!(a.len(), b.len());
+    let [a_mean, b_mean] = [mean(a), mean(b)];
+    let mut b = b.iter().copied();
+    let cov = sum_with(a, |acc: &mut f64, val| {
+        *acc += (val - a_mean) * (b.next().unwrap() - b_mean);
+    }) / (a.len() as f64);
+    (a_mean, b_mean, cov)
+}
+
 /// Sum a slice of data into a single float at high accuracy and speed.
 /// Like [`sum`], but allows passing in a custom function.
 ///

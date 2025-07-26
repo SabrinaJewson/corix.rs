@@ -587,6 +587,7 @@ pub mod spherical {
 /// Panics if
 /// - `s` is not the same length as `s_deriv`, or
 /// - `s` is too long.
+#[must_use]
 pub fn riccati_s(x: f64, s: &mut [f64], s_deriv: &mut [f64]) -> usize {
     assert_eq!(s.len(), s_deriv.len());
     if s.is_empty() {
@@ -652,6 +653,7 @@ fn riccati_s_short_slice() {
 /// Panics if
 /// - `c` is not the same length as `c_deriv`, or
 /// - `c` is too long.
+#[must_use]
 pub fn riccati_c(x: f64, c: &mut [f64], c_deriv: &mut [f64]) -> usize {
     assert_eq!(c.len(), c_deriv.len());
     if c.is_empty() {
