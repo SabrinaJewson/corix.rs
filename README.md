@@ -37,11 +37,12 @@ We don’t use R because it’s GPL.
 - Special functions
 	- [`erf`], [`gamma`]: Error function, gamma function
 		(at the time of writing, the methods on `f64` itself are unstable).
-	- [`airy`](mod@airy): The Airy functions Ai and Bi,
+	- [`airy`][mod@airy]: The Airy functions Ai and Bi,
 		their first derivatives, zeros and integrals.
 	- [`bessel`]: Bessel functions.
 	- [`ellip::jacobi`]: Jacobi elliptic functions sn, cn, dn, am.
 	- [`ellip`]: Complete and incomplete elliptic integrals of the first and second kind.
+	- [`struve`][mod@struve]: Struve functions.
 
 ## Some other crates
 

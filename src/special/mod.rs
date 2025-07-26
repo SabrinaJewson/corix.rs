@@ -15,3 +15,6 @@ pub use airy::*;
 pub mod ellip;
 
 pub mod bessel;
+
+pub mod struve;
+pub use struve::*;

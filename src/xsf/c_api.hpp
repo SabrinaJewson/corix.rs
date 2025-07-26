@@ -4,6 +4,7 @@
 #include "vendored/include/xsf/ellip.h"
 #include "vendored/include/xsf/specfun/specfun.h"
 #include "vendored/include/xsf/sph_bessel.h"
+#include "vendored/include/xsf/struve.h"
 #include "vendored/include/xsf/wright_bessel.h"
 
 using std::complex;
@@ -112,3 +113,9 @@ struct Slice {
 };
 extern "C" void PREFIXED(rctj)(double x, int *nm, double *rj, double *dj, int len) { return xsf::rctj(x, nm, (Slice<double>){ rj, len }, (Slice<double>){ dj, len }); }
 extern "C" void PREFIXED(rcty)(double x, int *nm, double *rj, double *dj, int len) { return xsf::rcty(x, nm, (Slice<double>){ rj, len }, (Slice<double>){ dj, len }); }
+
+extern "C" double PREFIXED(struve_h)(double v, double z) { return xsf::struve_h(v, z); }
+extern "C" double PREFIXED(struve_l)(double v, double z) { return xsf::struve_l(v, z); }
+extern "C" double PREFIXED(itstruve0)(double x) { return xsf::itstruve0(x); }
+extern "C" double PREFIXED(it2struve0)(double x) { return xsf::it2struve0(x); }
+extern "C" double PREFIXED(itmodstruve0)(double x) { return xsf::itmodstruve0(x); }
